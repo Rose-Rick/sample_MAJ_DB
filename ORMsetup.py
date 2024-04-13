@@ -1,8 +1,7 @@
 # import functions from various packages
-from datetime import date
 from typing import List
 from typing import Optional
-from sqlalchemy import Integer, String, Numeric
+from sqlalchemy import Integer, String, Numeric, Date
 from sqlalchemy import ForeignKey, create_engine, Table, Column
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 from sqlalchemy.orm import relationship, sessionmaker, Session
@@ -68,41 +67,41 @@ class Transactions(Base):
             f"CC={self.CC!r}, "
             f"cclast4digits={self.cclast4digits!r})")
 
-# class Orders(Base):
-#     __tablename__ = "Orders"
+class Orders(Base):
+    __tablename__ = "Orders"
 
-#     order_ID: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     order_date: Mapped[date] = mapped_column(date)
-#     shipping_cost: Mapped[int] = mapped_column(Integer)
-#     Sales_Tax_Code: Mapped[int] = mapped_column(Integer)
-#     TransactionID: Mapped[int] = mapped_column(Integer)
-#     ClientID: Mapped[int] = mapped_column(Integer)
+    order_ID: Mapped[int] = mapped_column(Integer, primary_key=True)
+    order_date: Mapped[Date] = mapped_column(Date)
+    shipping_cost: Mapped[int] = mapped_column(Integer)
+    Sales_Tax_Code: Mapped[int] = mapped_column(Integer)
+    TransactionID: Mapped[int] = mapped_column(Integer)
+    ClientID: Mapped[int] = mapped_column(Integer)
+
+    def __repr__(self) -> str:
+        return (f"Orders(order_ID={self.order_ID!r}, "
+            f"order_date={self.order_date!r}, "
+            f"shipping_cost={self.shipping_cost!r}, "
+            f"Sales_Tax_Code={self.Sales_Tax_Code!r}, "
+            f"TransactionID={self.TransactionID!r}), "
+            f"ClientID={self.ClientID!r})")
+
+class order_Line(Base):
+    __tablename__ = "order_Line"
+
+    lotID: Mapped[int] = mapped_column(Integer, primary_key=True)
+    order_ID: Mapped[Numeric] = mapped_column(Numeric, primary_key=True)
+    unit_price: Mapped[Numeric] = mapped_column(Numeric(10, 2))
+    itemCount: Mapped[int] = mapped_column(Integer)
+    lineNum: Mapped[int] = mapped_column(Integer, nullable=False)
+
+
+    def __repr__(self) -> str:
+        return (f"order_Line(lotID={self.lotID!r}, "
+            f"order_ID={self.order_ID!r}, "
+            f"unit_price={self.unit_price!r}, "
+            f"itemCount={self.itemCount!r}, "
+            f"lineNum={self.lineNum!r})")
     
-#     def __repr__(self) -> str:
-#         return (f"Orders(order_ID={self.order_ID!r}, "
-#             f"order_date={self.order_date!r}, "
-#             f"shipping_cost={self.shipping_cost!r}, "
-#             f"Sales_Tax_Code={self.Sales_Tax_Code!r}, "
-#             f"TransactionID={self.TransactionID!r}), "
-#             f"ClientID={self.ClientID!r})")
-        
-# class order_Line(Base):
-#     __tablename__ = "order_Line"
-
-#     lotID: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     order_ID: Mapped[Numeric] = mapped_column(Numeric, primary_key=True)
-#     unit_price: Mapped[Numeric] = mapped_column(Numeric(10, 2))
-#     itemCount: Mapped[int] = mapped_column(Integer)
-#     lineNum: Mapped[int] = mapped_column(Integer, nullable=False)
-
-    
-#     def __repr__(self) -> str:
-#         return (f"order_Line(lotID={self.lotID!r}, "
-#             f"order_ID={self.order_ID!r}, "
-#             f"unit_price={self.unit_price!r}, "
-#             f"itemCount={self.itemCount!r}, "
-#             f"lineNum={self.lineNum!r})")
-
 Base.metadata.drop_all(engine)
 #Create Tables
 Base.metadata.create_all(engine)
@@ -143,6 +142,7 @@ with Session(engine) as session:
         jewelry(lotID=200031, styleID='DI(EM)', MSRP=35000, styleDescription='Emerald cut, 2.01ct F/VVS2 GIA certified', totalSize=0, largeStoneQual='2.01ct F/VVS2'),
         jewelry(lotID=200032, styleID='RG-ER', MSRP=1400, styleDescription='14KW, custom RG-ER, no center stone, cathedral setting, high polish, 50% DI(RB) LAB melee, (20)0.45tcw FG/VS', totalSize=0, largeStoneQual='LAB melee (20)0.45tcw FG/VS')
     ]
+
 
     session.add_all(jewelry_inventory)
     session.commit()
