@@ -42,7 +42,7 @@ class jewelry(Base):
     styleDescription: Mapped[str] = mapped_column(String(500))
     totalSize: Mapped[int] = mapped_column(Integer)
     largeStoneQual: Mapped[str] = mapped_column(String(50))
-    
+
     def __repr__(self) -> str: #represents the object as a string 
         return (f"jewelry(lotID={self.lotID!r}, "
             f"styleID={self.styleID!r}, "
@@ -50,23 +50,23 @@ class jewelry(Base):
             f"styleDescription={self.styleDescription!r}, "
             f"totalSize={self.totalSize!r}, "
             f"largeStoneQual={self.largeStoneQual!r})")
-    
+
 class Transactions(Base):
     __tablename__ = "Transactions"
-
+    
     transactionID: Mapped[int] = mapped_column(Integer, primary_key=True)
     cash: Mapped[int] = mapped_column(Integer)
     ACH: Mapped[int] = mapped_column(Integer)
     CC: Mapped[int] = mapped_column(Integer)
     cclast4digits: Mapped[int] = mapped_column(Integer)
-    
+
     def __repr__(self) -> str:
         return (f"Transactions(transactionID={self.transactionID!r}, "
             f"cash={self.cash!r}, "
             f"ACH={self.ACH!r}, "
             f"CC={self.CC!r}, "
             f"cclast4digits={self.cclast4digits!r})")
-    
+
 class Orders(Base):
     __tablename__ = "Orders"
 
@@ -74,9 +74,8 @@ class Orders(Base):
     order_date: Mapped[Date] = mapped_column(Date)
     shipping_cost: Mapped[int] = mapped_column(Integer)
     Sales_Tax_Code: Mapped[str] = mapped_column(String)
-    TransactionID: Mapped[int] = mapped_column(Integer)
     ClientID: Mapped[str] = mapped_column(String)
-    
+
     def __repr__(self) -> str:
         return (f"Orders(order_ID={self.order_ID!r}, "
             f"order_date={self.order_date!r}, "
@@ -84,7 +83,7 @@ class Orders(Base):
             f"Sales_Tax_Code={self.Sales_Tax_Code!r}, "
             f"TransactionID={self.TransactionID!r}), "
             f"ClientID={self.ClientID!r})")
-        
+  
 class order_Line(Base):
     __tablename__ = "order_Line"
 
@@ -94,20 +93,20 @@ class order_Line(Base):
     itemCount: Mapped[int] = mapped_column(Integer)
     lineNum: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    
     def __repr__(self) -> str:
         return (f"order_Line(lotID={self.lotID!r}, "
             f"order_ID={self.order_ID!r}, "
             f"unit_price={self.unit_price!r}, "
             f"itemCount={self.itemCount!r}, "
             f"lineNum={self.lineNum!r})")
-    
+
 Base.metadata.drop_all(engine)
 #Create Tables
 Base.metadata.create_all(engine)
 
 #Insert Data
 with Session(engine) as session:
+
     jewelry_inventory = [
         jewelry(lotID=200001, styleID='watch', MSRP=52000, styleDescription='Patek Philippe Nautilus Moon Phase - SS, jubilee strap', totalSize=40, largeStoneQual='no stones'),
         jewelry(lotID=200002, styleID='watch', MSRP=55000, styleDescription='Patek Philippe Nautilus Moon Phase - Rose Gold', totalSize=40, largeStoneQual='no stones'),
@@ -144,32 +143,80 @@ with Session(engine) as session:
     ]
 
     Tx = [
-        Transactions(transactionID=1000001, cash=0, ACH=52000, CC=0, cclast4digits=0),
-        Transactions(transactionID=1000002, cash=0, ACH=0, CC=55400, cclast4digits=3213),
-        Transactions(transactionID=1000003, cash=0, ACH=40000, CC=0, cclast4digits=0),
-        Transactions(transactionID=1000004, cash=0, ACH=44500, CC=0, cclast4digits=0),
-        Transactions(transactionID=1000005, cash=2000, ACH=40000, CC=0, cclast4digits=0),
-        Transactions(transactionID=1000006, cash=0, ACH=50200, CC=0, cclast4digits=0),
-        Transactions(transactionID=1000007, cash=0, ACH=2000, CC=0, cclast4digits=0),
-        Transactions(transactionID=1000008, cash=0, ACH=500, CC=0, cclast4digits=0),
-        Transactions(transactionID=1000009, cash=0, ACH=0, CC=23400, cclast4digits=4213),
-        Transactions(transactionID=1000010, cash=1000, ACH=5000, CC=0, cclast4digits=0)
+        Transactions(transactionID=1000001, cash=0, ACH=57000, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000002, cash=0, ACH=0, CC=55400, CClast4Digits=3281),
+        Transactions(transactionID=1000003, cash=0, ACH=40000, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000004, cash=0, ACH=44500, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000005, cash=0, ACH=24000, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000006, cash=0, ACH=9700, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000007, cash=0, ACH=20000, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000008, cash=0, ACH=1500, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000009, cash=0, ACH=0, CC=27400, CClast4Digits=4213),
+        Transactions(transactionID=1000010, cash=0, ACH=14500, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000011, cash=0, ACH=52000, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000012, cash=0, ACH=0, CC=12300, CClast4Digits=3519),
+        Transactions(transactionID=1000013, cash=0, ACH=7900, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000014, cash=0, ACH=10200, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000015, cash=0, ACH=7650, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000016, cash=0, ACH=3200, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000017, cash=0, ACH=28500, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000018, cash=0, ACH=5500, CC=0, CClast4Digits=0),
+        Transactions(transactionID=1000019, cash=0, ACH=0, CC=29100, CClast4Digits=4877),
+        Transactions(transactionID=1000020, cash=0, ACH=35000, CC=0, CClast4Digits=0)
     ]
+
 
     Ords = [
-        Orders(order_ID=11, order_date='2022-03-14', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000001, ClientID='A123'),
-        Orders(order_ID=12, order_date='2022-04-02', shipping_cost=400, Sales_Tax_Code='OOS', TransactionID=1000002, ClientID='D456'),
-        Orders(order_ID=13, order_date='2022-02-26', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000003, ClientID='G789'),
-        Orders(order_ID=14, order_date='2022-12-17', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000004, ClientID='J012'),
-        Orders(order_ID=15, order_date='2022-08-08', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000005, ClientID='O345'),
-        Orders(order_ID=16, order_date='2023-06-11', shipping_cost=200, Sales_Tax_Code='WS', TransactionID=1000006, ClientID='R678'),
-        Orders(order_ID=17, order_date='2023-07-01', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000007, ClientID='U901'),
-        Orders(order_ID=18, order_date='2023-01-15', shipping_cost=200, Sales_Tax_Code='WS', TransactionID=1000008, ClientID='X234'),
-        Orders(order_ID=19, order_date='2023-06-22', shipping_cost=400, Sales_Tax_Code='OOS', TransactionID=1000009, ClientID='A567'),
-        Orders(order_ID=20, order_date='2023-09-13', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000010, ClientID='D890')
+        Orders(order_ID=11, order_date='2022-03-14', shipping_cost=0, sales_tax_code='IL', ClientID='A123'),
+        Orders(order_ID=12, order_date='2022-04-02', shipping_cost=400, sales_tax_code='OOS', ClientID='D456'),
+        Orders(order_ID=13, order_date='2022-02-26', shipping_cost=0, sales_tax_code='IL', ClientID='G789'),
+        Orders(order_ID=14, order_date='2022-12-17', shipping_cost=0, sales_tax_code='IL', ClientID='J012'),
+        Orders(order_ID=15, order_date='2022-08-08', shipping_cost=0, sales_tax_code='IL', ClientID='O345'),
+        Orders(order_ID=16, order_date='2023-06-11', shipping_cost=200, sales_tax_code='WS', ClientID='R678'),
+        Orders(order_ID=17, order_date='2023-07-01', shipping_cost=0, sales_tax_code='IL', ClientID='U901'),
+        Orders(order_ID=18, order_date='2023-01-15', shipping_cost=200, sales_tax_code='WS', ClientID='X234'),
+        Orders(order_ID=19, order_date='2023-06-22', shipping_cost=400, sales_tax_code='OOS', ClientID='A567'),
+        Orders(order_ID=20, order_date='2023-09-13', shipping_cost=0, sales_tax_code='IL', ClientID='D890'),
+        Orders(order_ID=21, order_date='2022-05-25', shipping_cost=0, sales_tax_code='IL', ClientID='M123'),
+        Orders(order_ID=22, order_date='2022-07-12', shipping_cost=300, sales_tax_code='OOS', ClientID='L456'),
+        Orders(order_ID=23, order_date='2022-09-03', shipping_cost=0, sales_tax_code='IL', ClientID='P789'),
+        Orders(order_ID=24, order_date='2022-11-20', shipping_cost=0, sales_tax_code='IL', ClientID='R012'),
+        Orders(order_ID=25, order_date='2023-02-28', shipping_cost=0, sales_tax_code='IL', ClientID='S345'),
+        Orders(order_ID=26, order_date='2023-04-15', shipping_cost=200, sales_tax_code='WS', ClientID='W678'),
+        Orders(order_ID=27, order_date='2023-08-01', shipping_cost=0, sales_tax_code='IL', ClientID='Y901'),
+        Orders(order_ID=28, order_date='2023-10-22', shipping_cost=200, sales_tax_code='WS', ClientID='X9020'),
+        Orders(order_ID=29, order_date='2023-12-09', shipping_cost=400, sales_tax_code='OOS', ClientID='B500'),
+        Orders(order_ID=30, order_date='2024-01-31', shipping_cost=0, sales_tax_code='IL', ClientID='C890')
     ]
 
-    session.add_all(jewelry_inventory + Tx + Ords)
+    o_Lines = [
+        order_Line(lotID=200001, order_ID=11, unit_price=52000.00, item_count=1, line_number=1),
+        order_Line(lotID=200020, order_ID=11, unit_price=5000.00, item_count=1, line_number=2),
+        order_Line(lotID=200002, order_ID=12, unit_price=55000.00, item_count=1, line_number=1),
+        order_Line(lotID=200003, order_ID=13, unit_price=40000.00, item_count=1, line_number=1),
+        order_Line(lotID=200004, order_ID=14, unit_price=44500.00, item_count=1, line_number=1),
+        order_Line(lotID=200005, order_ID=15, unit_price=24000.00, item_count=1, line_number=1),
+        order_Line(lotID=200006, order_ID=16, unit_price=9500.00, item_count=1, line_number=1),
+        order_Line(lotID=200007, order_ID=17, unit_price=20000.00, item_count=1, line_number=1),
+        order_Line(lotID=200008, order_ID=18, unit_price=1500.00, item_count=1, line_number=1),
+        order_Line(lotID=200009, order_ID=19, unit_price=27000.00, item_count=1, line_number=1),
+        order_Line(lotID=200010, order_ID=20, unit_price=14500.00, item_count=1, line_number=1),
+        order_Line(lotID=200011, order_ID=21, unit_price=52000.00, item_count=1, line_number=1),
+        order_Line(lotID=200012, order_ID=22, unit_price=12000.00, item_count=1, line_number=1),
+        order_Line(lotID=200013, order_ID=23, unit_price=7900.00, item_count=1, line_number=1),
+        order_Line(lotID=200014, order_ID=24, unit_price=10200.00, item_count=1, line_number=1),
+        order_Line(lotID=200015, order_ID=25, unit_price=7650.00, item_count=1, line_number=1),
+        order_Line(lotID=200016, order_ID=26, unit_price=3000.00, item_count=1, line_number=1),
+        order_Line(lotID=200017, order_ID=27, unit_price=2850.00, item_count=1, line_number=1),
+        order_Line(lotID=200025, order_ID=28, unit_price=1900.00, item_count=1, line_number=1),
+        order_Line(lotID=200029, order_ID=28, unit_price=3400.00, item_count=1, line_number=2),
+        order_Line(lotID=200026, order_ID=29, unit_price=700.00, item_count=1, line_number=1),
+        order_Line(lotID=200032, order_ID=29, unit_price=3000.00, item_count=1, line_number=2),
+        order_Line(lotID=200027, order_ID=29, unit_price=25000.00, item_count=1, line_number=3),
+        order_Line(lotID=200031, order_ID=30, unit_price=35000.00, item_count=1, line_number=1)
+    ]
+
+    session.add_all(jewelry_inventory + Tx + Ords + o_Lines)
     session.commit()
 
 # Simple Queries
