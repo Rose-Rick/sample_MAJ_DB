@@ -42,7 +42,7 @@ class jewelry(Base):
     styleDescription: Mapped[str] = mapped_column(String(500))
     totalSize: Mapped[int] = mapped_column(Integer)
     largeStoneQual: Mapped[str] = mapped_column(String(50))
-
+    
     def __repr__(self) -> str: #represents the object as a string 
         return (f"jewelry(lotID={self.lotID!r}, "
             f"styleID={self.styleID!r}, "
@@ -50,7 +50,7 @@ class jewelry(Base):
             f"styleDescription={self.styleDescription!r}, "
             f"totalSize={self.totalSize!r}, "
             f"largeStoneQual={self.largeStoneQual!r})")
-
+    
 class Transactions(Base):
     __tablename__ = "Transactions"
 
@@ -59,24 +59,24 @@ class Transactions(Base):
     ACH: Mapped[int] = mapped_column(Integer)
     CC: Mapped[int] = mapped_column(Integer)
     cclast4digits: Mapped[int] = mapped_column(Integer)
-
+    
     def __repr__(self) -> str:
         return (f"Transactions(transactionID={self.transactionID!r}, "
             f"cash={self.cash!r}, "
             f"ACH={self.ACH!r}, "
             f"CC={self.CC!r}, "
             f"cclast4digits={self.cclast4digits!r})")
-
+    
 class Orders(Base):
     __tablename__ = "Orders"
 
     order_ID: Mapped[int] = mapped_column(Integer, primary_key=True)
     order_date: Mapped[Date] = mapped_column(Date)
     shipping_cost: Mapped[int] = mapped_column(Integer)
-    Sales_Tax_Code: Mapped[int] = mapped_column(Integer)
+    Sales_Tax_Code: Mapped[str] = mapped_column(String)
     TransactionID: Mapped[int] = mapped_column(Integer)
-    ClientID: Mapped[int] = mapped_column(Integer)
-
+    ClientID: Mapped[str] = mapped_column(String)
+    
     def __repr__(self) -> str:
         return (f"Orders(order_ID={self.order_ID!r}, "
             f"order_date={self.order_date!r}, "
@@ -84,7 +84,7 @@ class Orders(Base):
             f"Sales_Tax_Code={self.Sales_Tax_Code!r}, "
             f"TransactionID={self.TransactionID!r}), "
             f"ClientID={self.ClientID!r})")
-
+        
 class order_Line(Base):
     __tablename__ = "order_Line"
 
@@ -94,7 +94,7 @@ class order_Line(Base):
     itemCount: Mapped[int] = mapped_column(Integer)
     lineNum: Mapped[int] = mapped_column(Integer, nullable=False)
 
-
+    
     def __repr__(self) -> str:
         return (f"order_Line(lotID={self.lotID!r}, "
             f"order_ID={self.order_ID!r}, "
@@ -143,8 +143,33 @@ with Session(engine) as session:
         jewelry(lotID=200032, styleID='RG-ER', MSRP=1400, styleDescription='14KW, custom RG-ER, no center stone, cathedral setting, high polish, 50% DI(RB) LAB melee, (20)0.45tcw FG/VS', totalSize=0, largeStoneQual='LAB melee (20)0.45tcw FG/VS')
     ]
 
+    Tx = [
+        Transactions(transactionID=1000001, cash=0, ACH=52000, CC=0, cclast4digits=0),
+        Transactions(transactionID=1000002, cash=0, ACH=0, CC=55400, cclast4digits=3213),
+        Transactions(transactionID=1000003, cash=0, ACH=40000, CC=0, cclast4digits=0),
+        Transactions(transactionID=1000004, cash=0, ACH=44500, CC=0, cclast4digits=0),
+        Transactions(transactionID=1000005, cash=2000, ACH=40000, CC=0, cclast4digits=0),
+        Transactions(transactionID=1000006, cash=0, ACH=50200, CC=0, cclast4digits=0),
+        Transactions(transactionID=1000007, cash=0, ACH=2000, CC=0, cclast4digits=0),
+        Transactions(transactionID=1000008, cash=0, ACH=500, CC=0, cclast4digits=0),
+        Transactions(transactionID=1000009, cash=0, ACH=0, CC=23400, cclast4digits=4213),
+        Transactions(transactionID=1000010, cash=1000, ACH=5000, CC=0, cclast4digits=0)
+    ]
 
-    session.add_all(jewelry_inventory)
+    Ords = [
+        Orders(order_ID=11, order_date='2022-03-14', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000001, ClientID='A123'),
+        Orders(order_ID=12, order_date='2022-04-02', shipping_cost=400, Sales_Tax_Code='OOS', TransactionID=1000002, ClientID='D456'),
+        Orders(order_ID=13, order_date='2022-02-26', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000003, ClientID='G789'),
+        Orders(order_ID=14, order_date='2022-12-17', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000004, ClientID='J012'),
+        Orders(order_ID=15, order_date='2022-08-08', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000005, ClientID='O345'),
+        Orders(order_ID=16, order_date='2023-06-11', shipping_cost=200, Sales_Tax_Code='WS', TransactionID=1000006, ClientID='R678'),
+        Orders(order_ID=17, order_date='2023-07-01', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000007, ClientID='U901'),
+        Orders(order_ID=18, order_date='2023-01-15', shipping_cost=200, Sales_Tax_Code='WS', TransactionID=1000008, ClientID='X234'),
+        Orders(order_ID=19, order_date='2023-06-22', shipping_cost=400, Sales_Tax_Code='OOS', TransactionID=1000009, ClientID='A567'),
+        Orders(order_ID=20, order_date='2023-09-13', shipping_cost=0, Sales_Tax_Code='IL', TransactionID=1000010, ClientID='D890')
+    ]
+
+    session.add_all(jewelry_inventory + Tx + Ords)
     session.commit()
 
 # Simple Queries
